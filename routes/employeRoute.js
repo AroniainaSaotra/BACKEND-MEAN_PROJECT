@@ -2,7 +2,7 @@ const { request, response } = require('express');
 const express = require('express');
 const router = express.Router();
 
-const Employe = require('../models/employeModel');
+const Employe = require('../models/backOffice/employeModel');
 
 // Route pour récupérer tous les utilisateurs
 router.get('/listeemploye', async (request, response) => {
