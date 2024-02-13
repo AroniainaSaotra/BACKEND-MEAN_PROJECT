@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const employeSchema = mongoose.Schema({
+const sousServicesSchema = mongoose.Schema({
     _id : String,
     id_services:String,
     libelle_detail:String,
@@ -9,4 +9,4 @@ const employeSchema = mongoose.Schema({
     description_detail :String,
     note_detail : Number
 })
-module.exports = mongoose.model('employe',employeSchema,'Employe');
+module.exports = mongoose.model('sous-services',sousServicesSchema,'Sous-Services');
