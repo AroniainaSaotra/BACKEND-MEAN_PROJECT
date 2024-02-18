@@ -11,8 +11,8 @@ const cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 
-const employeRoute = require('./routes/employeRoute');
-const managerRoute = require('./routes/managerRoute');
+const employeRoute = require('./routes/backOffice/employeRoute');
+const managerRoute = require('./routes/backOffice/managerRoute');
 
 app.use('/employe',employeRoute);
 app.use('/manager',managerRoute);

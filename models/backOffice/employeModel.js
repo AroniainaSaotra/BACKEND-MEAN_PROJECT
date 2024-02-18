@@ -4,6 +4,8 @@ const employeSchema = mongoose.Schema({
     name:String,
     mail:String,
     password: String,
-    role : String
+    role : String,
+    debutHeure: Number,
+    finHeure: Number
 })
 module.exports = mongoose.model('employe',employeSchema,'Employe');

@@ -4,8 +4,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId
 
-const Employe = require('../models/backOffice/employeModel');
-const RendezVous = require('../models/backOffice/rendezVousModel');
+const Employe = require('../../models/backOffice/employeModel');
+const RendezVous = require('../../models/backOffice/rendezVousModel');
 
 //nb de reservation par jour / mois
 router.get('/nbDeReservation', async (request, response) => {

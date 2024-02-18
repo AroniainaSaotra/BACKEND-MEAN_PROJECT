@@ -4,8 +4,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId
 
-const Employe = require('../models/backOffice/employeModel');
-const RendezVous = require('../models/backOffice/rendezVousModel');
+const Employe = require('../../models/backOffice/employeModel');
+const RendezVous = require('../../models/backOffice/rendezVousModel');
 
 // Route pour récupérer la liste des employes
 //test
@@ -141,6 +141,31 @@ router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
   }
 });
 
+//temps moyen de travail pour chaque employe 
+router.get('/temps-moyen-travail', async (request, response) => {
+  try {
+      const aggregateOptions = [
+          {
+              $project: {
+                  employe: 1,
+                  tempsTravail: { $subtract: ["$employe.finHeure", "$employe.debutHeure"] }
+              }
+          },
+          {
+              $group: {
+                  _id: "$employe",
+                  tempsMoyenTravail: { $avg: "$tempsTravail" }
+              }
+          }
+      ];
+
+      const results = await Employe.aggregate(aggregateOptions);
+
+      return response.status(200).json({ results });
+  } catch (error) {
+      return response.status(500).json({ message: "Erreur serveur.", error: error.message });
+  }
+})
 
 
 module.exports = router;
