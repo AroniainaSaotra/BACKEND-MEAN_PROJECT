@@ -113,6 +113,34 @@ router.post('/employe/:id', async (request, response) => {
   }
 });
 
+//route pour changement status de rendez-vous
+router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
+  try {
+      const rendezvousId = request.params.id;
+      const { status } = request.body;
+      const idEmploye = request.params.idEmploye;
+
+      if (!status) {
+          return response.status(400).json({ message: "Le statut du rendez-vous est requis." });
+      }
+
+      const rendezvous = await RendezVous.findById(rendezvousId);
+
+      if (!rendezvous) {
+          return response.status(404).json({ message: "Aucun rendez-vous trouvé avec cet ID." });
+      }
+
+      rendezvous.status = status;
+      rendezvous.idEmploye = idEmploye;
+
+      await rendezvous.save();
+
+      return response.status(200).json({ message: "Statut du rendez-vous mis à jour avec succès.", rendezvous });
+  } catch (error) {
+      return response.status(500).json({ message: "Erreur serveur.", error: error.message });
+  }
+});
+
 
 
 module.exports = router;
