@@ -43,7 +43,7 @@ router.get('/rendezVousEmploye/:idEmploye',async(request,response)=>{
     try{
       const idEmploye = request.params.idEmploye ;
       const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye)});
-      if (rdvByEmploye) {
+      if (rdvByEmploye.length>0) {
         const reponse = {
           message: 'Liste rendez-vous des employes',
           value: rdvByEmploye,
@@ -113,7 +113,7 @@ router.post('/employe/:id', async (request, response) => {
   }
 });
 
-//route pour changement status de rendez-vous
+//route pour changement statut de rendez-vous
 router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
   try {
       const rendezvousId = request.params.id;
@@ -130,10 +130,10 @@ router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
           return response.status(404).json({ message: "Aucun rendez-vous trouvé avec cet ID." });
       }
 
-      rendezvous.status = status;
-      rendezvous.idEmploye = idEmploye;
+      RendezVous.statut = status;
+      RendezVous.id_employe = idEmploye;
 
-      await rendezvous.save();
+      await RendezVous.save();
 
       return response.status(200).json({ message: "Statut du rendez-vous mis à jour avec succès.", rendezvous });
   } catch (error) {

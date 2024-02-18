@@ -12,8 +12,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const employeRoute = require('./routes/employeRoute');
+const managerRoute = require('./routes/managerRoute');
 
 app.use('/employe',employeRoute);
+app.use('/manager',managerRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
