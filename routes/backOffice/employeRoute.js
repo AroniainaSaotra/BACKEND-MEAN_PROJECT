@@ -52,7 +52,7 @@ router.get('/rendezVousEmploye/:idEmploye',async(request,response)=>{
         response.json(reponse);
       } else {
         const rep = {
-          message: 'Aucun rendez vous pour cette employe',
+          message: 'Aucun rendez-vous pour cette employe',
           code: 404,
           value: null
         };

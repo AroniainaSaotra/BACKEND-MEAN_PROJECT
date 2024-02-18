@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const sousServicesSchema = mongoose.Schema({
     _id : String,
-    id_services:String,
+    id_services:ObjectId,
     libelle_detail:String,
     delai_detail: Number,
     prix_detail :Number,
