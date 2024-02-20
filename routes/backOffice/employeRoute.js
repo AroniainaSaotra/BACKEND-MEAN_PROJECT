@@ -69,15 +69,16 @@ router.get('/rendezVousEmploye/:idEmploye',async(request,response)=>{
 });
 
 //route pour rechercher les rendez-vous par date et idEmploye(session)
-router.get('rendezVousParDate/:idEmploye/:dateRecherche',async(request,response)=>{
+router.get('/rendezVousParDate/:idEmploye/:dateRecherche',async(request,response)=>{
     try {
+      console.log(request.params.idEmploye);
       const idEmploye = request.params.idEmploye;
       const dateRecherche = request.params.dateRecherche;
-       const rechercheParDate = await RendezVous.find({"idEmploye": new ObjectId(idEmploye),"dateHeureRDV": dateRecherche})
-       if (rechercheParDate){
+       const rechercheParDate = await RendezVous.find({"idEmploye": new ObjectId(idEmploye),"dateHeureRDV": new Date(dateRecherche)})
+       if (rechercheParDate.length>0){
         const reponse = {
           message: 'Rendez-vous par date OK',
-          value: rdvByEmploye,
+          value: rechercheParDate,
           code: 200,
         };
         response.json(reponse);
@@ -100,12 +101,12 @@ router.get('rendezVousParDate/:idEmploye/:dateRecherche',async(request,response)
 });
 
 // route pour ajouter une description du profil employe
-router.post('/employe/:id', async (request, response) => {
+router.post('/employe/:idEmploye', async (request, response) => {
   try {
-      const id = request.params.id;
+      const id = request.params.idEmploye;
       const { description } = request.body;
-      let employe = await Employe.findById(id);
-      Employe.description = description;
+      let employe = await Employe.findById(new ObjectId(id));
+      employe.description = description;
       await Employe.save();
       return response.status(200).json({ message: "Description de l'employé mise à jour avec succès.", employe });
   } catch (error) {
@@ -114,9 +115,9 @@ router.post('/employe/:id', async (request, response) => {
 });
 
 //route pour changement statut de rendez-vous
-router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
+router.put('/rendezvous/:idRendezVous/:idEmploye', async (request, response) => {
   try {
-      const rendezvousId = request.params.id;
+      const rendezvousId = request.params.idRendezVous;
       const { status } = request.body;
       const idEmploye = request.params.idEmploye;
 
@@ -124,14 +125,14 @@ router.put('/rendezvous/:id/:idEmploye', async (request, response) => {
           return response.status(400).json({ message: "Le statut du rendez-vous est requis." });
       }
 
-      const rendezvous = await RendezVous.findById(rendezvousId);
+      const rendezvous = await RendezVous.findById(new ObjectId(rendezvousId));
 
       if (!rendezvous) {
           return response.status(404).json({ message: "Aucun rendez-vous trouvé avec cet ID." });
       }
 
       RendezVous.statut = status;
-      RendezVous.id_employe = idEmploye;
+      RendezVous.id_employe = new ObjectId(idEmploye);
 
       await RendezVous.save();
 
