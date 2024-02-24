@@ -13,9 +13,11 @@ app.use(bodyParser.json());
 
 const employeRoute = require('./routes/backOffice/employeRoute');
 const managerRoute = require('./routes/backOffice/managerRoute');
+const servicesRoute = require('./routes/backOffice/servicesRoute');
 
 app.use('/employe',employeRoute);
 app.use('/manager',managerRoute);
+app.use('/services',servicesRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

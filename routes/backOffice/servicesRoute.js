@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId
 
 const Employe = require('../../models/backOffice/employeModel');
-const RendezVous = require('../../models/backOffice/rendezVousModel');
+const RendezVous = require('../../models/bacskOffice/rendezVousModel');
 const Services = require('../models/backOffice/servicesModel');
 const ServiceDetail = require('../models/backOffice/sousServicesModel');
 

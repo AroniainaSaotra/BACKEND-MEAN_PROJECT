@@ -115,5 +115,6 @@ router.get('/chiffre-affaires', async (request, response) => {
     }
 });
 
+//Benefice par mois
 
 module.exports = router;
