@@ -5,15 +5,15 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId
 
 const Employe = require('../../models/backOffice/employeModel');
-const RendezVous = require('../../models/bacskOffice/rendezVousModel');
-const Services = require('../models/backOffice/servicesModel');
-const ServiceDetail = require('../models/backOffice/sousServicesModel');
+const RendezVous = require('../../models/backOffice/rendezVousModel');
+const Services = require('../../models/backOffice/servicesModel');
+const ServiceDetail = require('../../models/backOffice/sousServicesModel');
 
 // Route pour récupérer la liste de tous les services
 router.get('/listeServices', async (request, response) => {
     try {
         const services = await Services.find();
-        return response.status(200).json({ services });
+        return response.status(200).json( services );
     } catch (error) {
         return response.status(500).json({ message: "Erreur serveur.", error: error.message });
     }
@@ -28,7 +28,7 @@ router.put('/modifier-services', async (request, response) => {
         // Mise à jour du service
         await Services.findByIdAndUpdate(serviceId, {
             libelle_services: libelleService,
-            description: descriptionService
+            description_service: descriptionService
         });
 
         // Mise à jour du détail du service
