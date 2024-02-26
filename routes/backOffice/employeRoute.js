@@ -11,7 +11,8 @@ const RendezVous = require('../../models/backOffice/rendezVousModel');
 //test
 router.get('/listeemploye', async (request, response) => {
     try {
-      const employes = await Employe.find();
+      const employeId = "65d80ee3399e76ad23c88924";
+      const employes = await Employe.find({"id_role":new ObjectId(employeId)}).populate('id_role');
   
       if (employes.length > 0) {
         const reponse = {
@@ -42,23 +43,24 @@ router.get('/listeemploye', async (request, response) => {
 router.get('/rendezVousEmploye/:idEmploye',async(request,response)=>{
     try{
       const idEmploye = request.params.idEmploye ;
-      const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye)});
-      if (rdvByEmploye.length>0) {
+      const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye),"statut": "En cours"}).populate('id_employe')  // Populate pour les détails de l'employé
+      .populate('id_utilisateur').populate('id_detail'); 
         const reponse = {
           message: 'Liste rendez-vous des employes',
           value: rdvByEmploye,
           code: 200,
         };
         response.json(reponse);
-      } else {
-        const rep = {
-          message: 'Aucun rendez-vous pour cette employe',
-          code: 404,
-          value: null
-        };
-        response.status(404).json(rep);
-      }
+      
     }catch (err){
+      if (rdvByEmploye.length<0) {
+      const rep = {
+        message: 'Aucun rendez-vous pour cette employe',
+        code: 404,
+        value: null
+      };
+    }
+      response.status(404).json(rep);
       const rep = {
         message: 'Erreur serveur',
         code: 500,
@@ -101,40 +103,41 @@ router.get('/rendezVousParDate/:idEmploye/:dateRecherche',async(request,response
 });
 
 // route pour ajouter une description du profil employe
-router.post('/employe/:idEmploye', async (request, response) => {
+router.post('/ajoutDescription/:idEmploye', async (request, response) => {
   try {
       const id = request.params.idEmploye;
-      const { description } = request.body;
+      const { description ,debutHeure , finHeure} = request.body;
       let employe = await Employe.findById(new ObjectId(id));
       employe.description = description;
-      await Employe.save();
+      employe.debutHeure = debutHeure;
+      employe.finHeure = finHeure;
+      console.log(request.body.description);
+      await employe.save();
       return response.status(200).json({ message: "Description de l'employé mise à jour avec succès.", employe });
   } catch (error) {
-      return response.status(500).json({ message: "Erreur serveur.", error: error.message });
+      return response.status(500).json({ message: "Erreur serveur.", esrror: error.message });
   }
 });
 
 //route pour changement statut de rendez-vous
-router.put('/rendezvous/:idRendezVous/:idEmploye', async (request, response) => {
+router.put('/rendezvousStatus/:id', async (request, response) => {
   try {
-      const rendezvousId = request.params.idRendezVous;
+      const rendezvousId = request.params.id;
       const { status } = request.body;
-      const idEmploye = request.params.idEmploye;
 
       if (!status) {
           return response.status(400).json({ message: "Le statut du rendez-vous est requis." });
       }
 
-      const rendezvous = await RendezVous.findById(new ObjectId(rendezvousId));
+      const rendezvous = await RendezVous.findById(rendezvousId);
 
       if (!rendezvous) {
           return response.status(404).json({ message: "Aucun rendez-vous trouvé avec cet ID." });
       }
 
-      RendezVous.statut = status;
-      RendezVous.id_employe = new ObjectId(idEmploye);
+      rendezvous.statut = status;
 
-      await RendezVous.save();
+      await rendezvous.save();
 
       return response.status(200).json({ message: "Statut du rendez-vous mis à jour avec succès.", rendezvous });
   } catch (error) {
