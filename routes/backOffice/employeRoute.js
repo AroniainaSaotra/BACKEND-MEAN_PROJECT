@@ -39,6 +39,37 @@ router.get('/listeemploye', async (request, response) => {
     }
   });
 
+  //listeEmploye par Id
+  router.get('/listeemployeId/:idEmploye', async (request, response) => {
+    try {
+      const employeId = request.params.idEmploye;
+      const employes = await Employe.findById(new ObjectId(employeId)).populate('id_role');
+  
+      if (employes.length > 0) {
+        const reponse = {
+          message: 'liste des employes par id',
+          value: employes,
+          code: 200,
+        };
+        response.json(reponse);
+      } else {
+        const rep = {
+          message: 'Aucun employe trouvé',
+          code: 404,
+          value: null
+        };
+        response.status(404).json(rep);
+      }
+    } catch (err) {
+      const rep = {
+        message: 'Erreur serveur',
+        code: 500,
+        value: err.message
+      };
+      response.status(500).json(rep);
+    }
+  });
+
   //rendez-vous un employe
   router.get('/rendezVousEmployeOne/:idEmploye', async (request, response) => {
     let rdvByEmploye = []; // Define rdvByEmploye outside the try block
