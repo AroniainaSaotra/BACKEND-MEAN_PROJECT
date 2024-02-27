@@ -47,4 +47,35 @@ router.put('/modifier-services', async (request, response) => {
 });
 
 
+// route pour modifier services
+router.post('/modifyService/:idService', async (request, response) => {
+    try {
+        const idService = request.params.idService;
+
+        const { libelle_service ,description_service } = request.body;
+
+        let services = await Services.findById(new ObjectId(idService));
+
+        services.libelle_service = libelle_service;
+        services.description_service = description_service;
+        
+        await services.save();
+        return response.status(200).json({ message: "Description services modifie ", services });
+    } catch (error) {
+        return response.status(500).json({ message: "Erreur serveur.", esrror: error.message });
+    }
+  });
+
+  //get liste service by idService
+  router.get('/listeServicesById/:idService', async (request, response) => {
+    try {
+        const id = request.params.idService;
+        const services = await Services.findById(new ObjectId(id));
+        return response.status(200).json( services );
+    } catch (error) {
+        return response.status(500).json({ message: "Erreur serveur.", error: error.message });
+    }
+});
+
+
 module.exports = router;
