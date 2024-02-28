@@ -45,7 +45,7 @@ router.get('/listeemploye', async (request, response) => {
       const employeId = request.params.idEmploye;
       const employes = await Employe.findById(new ObjectId(employeId)).populate('id_role');
   
-      if (employes.length > 0) {
+      if (employes) {
         const reponse = {
           message: 'liste des employes par id',
           value: employes,
@@ -112,7 +112,7 @@ router.get('/rendezVousEmployeEncours/:idEmploye',async(request,response)=>{
       const idEmploye = request.params.idEmploye ;
       const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye),"statut": "En cours"}).populate('id_employe')  // Populate pour les détails de l'employé
       .populate('id_utilisateur').populate('id_detail'); 
-      if(rdvByEmploye.length>0){
+      if(rdvByEmploye){
         const reponse = {
           message: 'Liste rendez-vous des employes',
           value: rdvByEmploye,
@@ -143,7 +143,7 @@ router.get('/rendezVousEmployeTermine/:idEmploye',async(request,response)=>{
     const idEmploye = request.params.idEmploye ;
     const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye),"statut": "Termine"}).populate('id_employe')  // Populate pour les détails de l'employé
     .populate('id_utilisateur').populate('id_detail'); 
-    if(rdvByEmploye.length>0){
+    if(rdvByEmploye){
       const reponse = {
         message: 'Liste rendez-vous des employes',
         value: rdvByEmploye,
@@ -270,7 +270,7 @@ router.get('/temps-moyen-travail', async (request, response) => {
 });
 
 // route pour modifier horaire employe
-router.post('/modifyHoraire/:idEmploye', async (request, response) => {
+router.put('/modifyHoraire/:idEmploye', async (request, response) => {
   try {
       const id = request.params.idEmploye;
       const { debutHeure , finHeure} = request.body;
