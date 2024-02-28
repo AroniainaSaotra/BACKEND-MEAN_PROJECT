@@ -267,7 +267,25 @@ router.get('/temps-moyen-travail', async (request, response) => {
   } catch (error) {
       return response.status(500).json({ message: "Erreur serveur.", error: error.message });
   }
-})
+});
+
+// route pour modifier horaire employe
+router.post('/modifyHoraire/:idEmploye', async (request, response) => {
+  try {
+      const id = request.params.idEmploye;
+      const { debutHeure , finHeure} = request.body;
+      
+      let employe = await Employe.findById(new ObjectId(id));
+      employe.debutHeure = debutHeure;
+      employe.finHeure = finHeure;
+
+      await employe.save();
+
+      return response.status(200).json({ message: "Horaire de l'employé mise à jour avec succès.", employe });
+  } catch (error) {
+      return response.status(500).json({ message: "Erreur serveur.", esrror: error.message });
+  }
+});
 
 
 module.exports = router;
