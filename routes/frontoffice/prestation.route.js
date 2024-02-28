@@ -8,6 +8,6 @@ router.get(
   "/sousprestations/:id_service",
   prestationsController.getSousPrestationsById
 );
-
 router.get("/sousprestations", prestationsController.getAllSousPrestations);
+router.get("/sousservices/:id", prestationsController.getSousServiceById);
 module.exports = router;

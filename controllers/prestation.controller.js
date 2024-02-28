@@ -29,7 +29,19 @@ const getAllSousPrestations = async (req, res) => {
     });
   }
 };
+const getSousServiceById = (req, res, next) => {
+  const sousServiceId = req.params.id.trim();
 
+  Sous_Service.findById(sousServiceId)
+    .populate("id_service") // Pour obtenir les détails du service associé
+    .then((sousService) => {
+      if (!sousService) {
+        return res.status(404).json({ message: "Sous-service non trouvé" });
+      }
+      res.status(200).json(sousService);
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
 module.exports = {
   getAllPrestations,
   getAllSousPrestations,
@@ -38,4 +50,5 @@ module.exports = {
       .then((sousPrestations) => res.status(200).json(sousPrestations))
       .catch((error) => res.status(400).json({ error }));
   },
+  getSousServiceById,
 };
