@@ -10,7 +10,17 @@ async function signUp(req, res) {
     res.status(500).json({ error: "An error occurred during customer signup" });
   }
 }
+async function login(req, res) {
+  try {
+    const loginData = req.body;
+    const result = await customerService.loginCustomer(loginData);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 module.exports = {
   signUp,
+  login,
 };

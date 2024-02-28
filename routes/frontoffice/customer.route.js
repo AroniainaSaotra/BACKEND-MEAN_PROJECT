@@ -6,4 +6,5 @@ const cors = require("cors");
 
 // Endpoint pour l'inscription d'un client
 router.post("/signup", customerController.signUp);
+router.post("/login", customerController.login);
 module.exports = router;
