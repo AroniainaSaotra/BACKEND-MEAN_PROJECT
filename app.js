@@ -16,6 +16,14 @@ const managerRoute = require("./routes/backOffice/managerRoute");
 const servicesRoute = require("./routes/backOffice/servicesRoute");
 const utilisateurRoute = require("./routes/backOffice/utilisateurRoute");
 const sous_services = require("./routes/backOffice/sousServicesRoute");
+const offre= require("./routes/backOffice/offreRoute");
+app.use("/employe", employeRoute);
+app.use("/manager", managerRoute);
+app.use("/services", servicesRoute);
+app.use("/user", utilisateurRoute);
+app.use("/sous-services", sous_services);
+app.use("/offre",offre);
+
 
 const customerRoutes = require("./routes/frontoffice/customer.route");
 const prestationRoutes = require("./routes/frontoffice/prestation.route");
@@ -26,15 +34,11 @@ app.use("/cart", cartRoutes);
 app.use("/customers", customerRoutes);
 app.use("/prestations", prestationRoutes);
 
-app.use("/employe", employeRoute);
-app.use("/manager", managerRoute);
-app.use("/services", servicesRoute);
-app.use("/user", utilisateurRoute);
-app.use("/sous-services", sous_services);
 app.use("/customers", customerRoutes);
 app.use("/prestations", prestationRoutes);
 app.use("/historiques", historyRoutes);
 app.use("/notif", notificationRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
